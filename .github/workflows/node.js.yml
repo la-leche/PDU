@@ -28,5 +28,6 @@ jobs:
         cache: 'yarn'
         cache-dependency-path: server/package.json
     - run: yarn install --frozen-lockfile
+    - run: ls
     - run: yarn run pretest
     - run: yarn run posttest
