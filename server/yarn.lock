@@ -8058,27 +8058,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docs@workspace:apps/docs":
-  version: 0.0.0-use.local
-  resolution: "docs@workspace:apps/docs"
-  dependencies:
-    "@next/eslint-plugin-next": ^13.4.19
-    "@types/node": ^17.0.12
-    "@types/react": ^18.0.22
-    "@types/react-dom": ^18.0.7
-    components: "*"
-    eslint: ^8.51.0
-    eslint-config-custom: "*"
-    eslint-import-resolver-typescript: ^3.6.1
-    eslint-plugin-import: ^2.28.1
-    next: ^13.4.19
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    tsconfig: "*"
-    typescript: ^4.5.3
-  languageName: unknown
-  linkType: soft
-
 "doctrine@npm:3.0.0, doctrine@npm:^3.0.0":
   version: 3.0.0
   resolution: "doctrine@npm:3.0.0"
