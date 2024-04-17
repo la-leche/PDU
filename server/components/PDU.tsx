@@ -5,7 +5,6 @@ import { JSX } from "preact/jsx-runtime";
 import { Tooltip } from "./Tooltip.tsx";
 import { IOutlet, IPDU } from "../interfaces/PDU.ts";
 import { Button } from "./Button.tsx";
-import { useEffect } from "preact/hooks";
 import { Signal } from "@preact/signals";
 
 interface PDU_PanelComponentProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -47,35 +46,37 @@ export const PDU_PanelComponent = (props: PDU_PanelComponentProps) => {
             <PDU_PanelComponentElement outlet={outlet} />
           ))}
       </div>
-      {props.item.connected ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            Promise.all([
-              fetch("/api/control/shutdown?socket=0&seconds=10"),
-              fetch("/api/control/shutdown?socket=1&seconds=10"),
-              fetch("/api/control/shutdown?socket=2&seconds=10"),
-              fetch("/api/control/shutdown?socket=3&seconds=10"),
-            ]);
-            ts.value = Date.now();
-          }}
-        >
-          <div className={"flex flex-row items-center"}>
-            <IconReload class="w-6 h-6" /> Restart PDU
-          </div>
-        </Button>
-      ) : (
-        <Button
-          variant="primary"
-          onClick={() => {
-            location.reload();
-          }}
-        >
-          <div className={"flex flex-row items-center"}>
-            <IconReload class="w-6 h-6" /> Reload page
-          </div>
-        </Button>
-      )}
+      {props.item.connected
+        ? (
+          <Button
+            variant="primary"
+            onClick={() => {
+              Promise.all([
+                fetch("/api/shutdown?socket=0&seconds=10"),
+                fetch("/api/shutdown?socket=1&seconds=10"),
+                fetch("/api/shutdown?socket=2&seconds=10"),
+                fetch("/api/shutdown?socket=3&seconds=10"),
+              ]);
+              ts.value = Date.now();
+            }}
+          >
+            <div className={"flex flex-row items-center"}>
+              <IconReload class="w-6 h-6" /> Restart PDU
+            </div>
+          </Button>
+        )
+        : (
+          <Button
+            variant="primary"
+            onClick={() => {
+              location.reload();
+            }}
+          >
+            <div className={"flex flex-row items-center"}>
+              <IconReload class="w-6 h-6" /> Reload page
+            </div>
+          </Button>
+        )}
     </Card>
   );
 };
@@ -87,6 +88,7 @@ interface PDU_PanelComponentElementProps
 
 export const PDU_PanelComponentElement = ({
   outlet,
+  children,
 }: PDU_PanelComponentElementProps) => {
   return (
     <Card
@@ -98,7 +100,8 @@ export const PDU_PanelComponentElement = ({
           <Tooltip
             variant={outlet.active ? "success" : "danger"}
             square
-          ></Tooltip>
+          >
+          </Tooltip>
           <span>{outlet.name}</span>
         </div>
         consumption: {outlet.consumption}W
@@ -108,7 +111,7 @@ export const PDU_PanelComponentElement = ({
         sz={"sm"}
         onClick={async () => {
           await fetch(
-            "/api/control/shutdown?socket=" + outlet.index + "&seconds=10"
+            "/api/shutdown?socket=" + outlet.index + "&seconds=10",
           );
         }}
       >
@@ -116,6 +119,7 @@ export const PDU_PanelComponentElement = ({
           <IconReload class="w-4 h-4" /> Restart socket
         </div>
       </Button>
+      {children}
     </Card>
   );
 };

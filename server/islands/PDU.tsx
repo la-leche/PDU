@@ -2,14 +2,13 @@ import { useEffect, useState } from "preact/hooks";
 import { PDU_PanelComponent } from "../components/PDU.tsx";
 import { IPDU } from "../interfaces/PDU.ts";
 import { Spinner } from "../components/Spinner.tsx";
-// import { EventSource } from "https://deno.land/std/http/server.ts";
 
 export function PDU_Panel() {
   const [data, setData] = useState<IPDU[] | null>(null);
 
   useEffect(() => {
     const sse = new EventSource(
-      "http://localhost:8000/api/control/getTelemetry"
+      "/api/getTelemetry",
     );
 
     // Handle heartbeat
@@ -37,7 +36,7 @@ export function PDU_Panel() {
       sse.close();
     }
 
-    sse.addEventListener("message", (event: any) => {
+    sse.addEventListener("message", (event: MessageEvent) => {
       // Reset heartbeat timer upon receiving any message
       sendHeartbeat();
 
@@ -88,13 +87,13 @@ export function PDU_Panel() {
 
   return (
     <div id="pdu_panel">
-      {data ? (
-        data.map((item, index) => (
-          <PDU_PanelComponent item={item} index={index} />
-        ))
-      ) : (
-        <Spinner />
-      )}
+      {data
+        ? (
+          data.map((item, index) => (
+            <PDU_PanelComponent item={item} index={index} />
+          ))
+        )
+        : <Spinner />}
     </div>
   );
 }

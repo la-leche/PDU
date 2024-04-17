@@ -47,7 +47,7 @@ function sendDataEvent(
 async function fetchTelemetry(): Promise<
   { socketsDown: number[]; time: number } | undefined
 > {
-  const apiUrl = "http://192.168.178.149:80/getTelemetry";
+  const apiUrl = "http://192.168.178.158:80/getTelemetry";
 
   const response = await fetch(apiUrl);
   if (!response.ok) {
