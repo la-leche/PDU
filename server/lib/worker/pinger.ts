@@ -1,14 +1,28 @@
-self.onmessage = () => {
-  setInterval(() => {
-    const apiUrl = "http://192.168.178.149/ping";
-    // fetch(apiUrl).catch(() => {
-    //   console.error("ALARM!!!! DISCONNECTED");
-    // });
-  }, 10 * 1000);
+let ping = false;
 
-  //   // Stop pinging after a specific duration (optional)
-  //   setTimeout(() => {
-  //     clearInterval(pingInterval);
-  //     console.log("Stopped pinging after 30 seconds");
-  //   }, 30000); // Stop after 30 seconds (optional)
-};
+self.addEventListener("start", function () {
+  // ping = true;
+  setInterval(async () => {
+    const apiUrl = "http://192.168.138.238:80/getTelemetry";
+    const resp = await fetch(apiUrl);
+    console.log(resp);
+    if (resp.status !== 200) {
+      console.error("ALARM!!!! DISCONNECTED");
+    }
+  }, 10 * 1000);
+});
+
+// self.addEventListener("stop", function () {
+//   ping = false;
+// });
+
+// while (ping) {
+//   setInterval(async () => {
+//     const apiUrl = "http://192.168.138.238/getTelemetry";
+//     const resp = await fetch(apiUrl);
+//     console.log(resp);
+//     if (resp.status !== 200) {
+//       console.error("ALARM!!!! DISCONNECTED");
+//     }
+//   }, 10 * 1000);
+// }

@@ -4,7 +4,7 @@ import {
   ServerSentEventStreamTarget,
 } from "$std/http/server_sent_event.ts";
 
-const PUSH_DELAY_MILLISECONDS = 250; // Set to 250ms for 1 second
+const PUSH_DELAY_MILLISECONDS = 500; // Set to 250ms for 1 second
 
 export const handler: Handlers = {
   GET(_req) {
@@ -47,7 +47,7 @@ function sendDataEvent(
 async function fetchTelemetry(): Promise<
   { socketsDown: number[]; time: number } | undefined
 > {
-  const apiUrl = "http://192.168.178.149:80/getTelemetry";
+  const apiUrl = "http://192.168.138.238:80/getTelemetry";
 
   const response = await fetch(apiUrl);
   if (!response.ok) {
